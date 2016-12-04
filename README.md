@@ -7,6 +7,7 @@ The application allows two types of access - administrators can create user acco
 ## Prerequisites
 
 * NodeJS (at least 4.3)
+* A modern web browser (ideally Chrome)
 
 ## Setting up
 
@@ -19,10 +20,13 @@ The application allows two types of access - administrators can create user acco
 * Create some user accounts in the web site -- the password will always be the same as the username.
 * You can use the following test credit card numbers:
 
+
 | expected outcome   | number           |
+|--------------------|------------------|
 | Insufficient funds | 5555555555554444 | 
 | Server is offline  | 4242424242424242 |
 | Payment successful | 4000000000000077 |
+
 
 ## Running tests
 
@@ -45,3 +49,10 @@ For example, to execute all the tests containing the phrase `account balance` in
 ```
 npm test -- filter='account balance'
 ```
+
+## Links for more information on the tools
+
+* [Zombie.js](http://zombie.js.org/), "Insanely fast, headless full-stack testing using Node.js"
+* [Jasmine](https://jasmine.github.io/), "Jasmine is a behavior-driven development framework for testing JavaScript code."
+* [Express](http://expressjs.com/), "Fast, unopinionated, minimalist web framework for Node.js"
+
