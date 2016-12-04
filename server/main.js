@@ -83,9 +83,8 @@ var express = require('express'),
 		setUpUserPages(app, paymentProcessor, accountRepository);
 
 		server = app.listen(3000, function () {
-			var host = server.address().address,
-					port = server.address().port;
-			console.log('Example app listening at http://%s:%s', host, port);
+			var port = server.address().port;
+			console.log('Example app listening at http://localhost:%s', port);
 		});
 	};
 
