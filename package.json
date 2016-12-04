@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "node spec/support/jasmine-runner.js",
     "start": "node server/main.js"
   },
   "author": "Gojko Adzic <gojko@gojko.com>",
@@ -15,6 +16,7 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.14.2",
     "jasmine": "^2.5.2",
+    "jasmine-spec-reporter": "^2.7.0",
     "uuid": "^3.0.1",
     "zombie": "^5.0.5"
   }
