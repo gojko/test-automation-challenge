@@ -1,0 +1,12 @@
+{{#if id}}
+<h1 id="name">{{name}}</h1>
+<div>
+Price: $<span id="price">{{price}}</span>
+<div id="description">{{description}}</div>
+<form method="post" action="/shopping-cart"><input type="hidden" name="itemId" value="{{id}}" />
+<input type="submit" value="Add to cart" id="add-to-cart" /></form>
+</div>
+<code>[Item ID: <span id="item-id">{{id}}</span>]</code>
+{{else}}
+Item not found!
+{{/if}}

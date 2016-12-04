@@ -1,0 +1,11 @@
+<h1>Checkout request</h1>
+
+{{#if error}}
+<div class="error"><h2>We could not ship the order due to a problem</h2>
+<span id="message">{{error}}</span>
+</div>
+{{else}}
+<div class="success"><h2>Your items are on the way</h2>
+<span id="totalPrice">{{totalPrice}}</span> was deducted from your account, and <span id="numItems">{{numItems}}</span> items were shipped.
+</div>
+{{/if}}

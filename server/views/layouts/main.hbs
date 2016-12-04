@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Test Server</title>
+</head>
+<body>
+
+ <a href="/">Item list</a> 
+{{#if isAdmin}}
+| <a href="/util/accounts">List accounts</a> | <a href="/util/account">Create account</a> | <a href="/util/item">Create item</a>
+{{else}}
+	{{#if currentAccount}}
+	| <a href="/user/me">Account info</a> | <a href="/shopping-cart">Shopping cart</a>
+	{{/if}}
+{{/if}}
+
+
+{{#if currentAccount}}
+| <span id="user-id">logged in as <a href="/user/me">{{currentAccount}}</a></span><form method="post" action="/log-out"><input type="submit" value="Log out"/></form>
+{{else}}
+| <a href="/log-in">Log in</a>
+{{/if}}
+<hr/>
+    {{{body}}}
+<hr/>
+[{{timestamp}}]
+</body>
+</html>

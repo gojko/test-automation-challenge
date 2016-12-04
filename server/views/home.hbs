@@ -1,0 +1,9 @@
+  <h1>Items</h1>
+  <ul>
+  {{#each items}}
+    <li><a href="/item/{{id}}">{{name}}</a></li>
+  {{else}}
+    <p>No items set up. <a href="/util/item">Set up an item</a>.</p>
+  {{/each}}
+  </ul>
+

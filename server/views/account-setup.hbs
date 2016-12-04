@@ -1,0 +1,11 @@
+  <h1>Set up account</h1>
+
+{{#if error}}
+Error: {{error}}
+{{/if}}
+
+	<form method="post">
+			<input name="name" placeholder="name" value="{{name}}"><br/>
+			<input name="amount" placeholder="initial balance"><br/>
+			<input type="submit" id="set-up-account" />
+	</form>

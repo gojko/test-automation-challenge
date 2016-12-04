@@ -1,0 +1,21 @@
+<h1>Shopping cart</h1>
+  {{#if items}}
+  <table>
+		{{#each items}}
+			<tr><td>
+				<a href="/item/{{id}}">{{name}}</a>
+			</td><td>
+				{{price}}
+			</td></tr>
+		{{/each}}
+		<tr><td><b>TOTAL</b></td><td id="totalPrice">{{totalPrice}}</td></tr>
+  </table>
+	<form method="post" action="/shopping-cart/clear">
+		<input type="submit" value="Clear" />
+	</form>
+	<form method="post" action="/shopping-cart/check-out">
+		<input type="submit" value="Check-out" id="check-out" />
+	</form>
+  {{else}}
+    <p>Your shopping cart is empty</p>
+  {{/if}}

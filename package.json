@@ -1,0 +1,21 @@
+{
+  "name": "test-automation-coding-challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/main.js"
+  },
+  "author": "Gojko Adzic <gojko@gojko.com>",
+  "private": true,
+  "license": "MIT",
+  "devDependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.14.2",
+    "jasmine": "^2.5.2",
+    "uuid": "^3.0.1",
+    "zombie": "^5.0.5"
+  }
+}

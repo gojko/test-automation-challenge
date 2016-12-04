@@ -1,0 +1,9 @@
+  <h1>Accounts</h1>
+  <ul>
+  {{#each accounts}}
+    <li><a href="/util/account/{{@key}}">{{@key}}</a> (balance {{this}})</li>
+  {{else}}
+    <p>No accounts set up. <a href="/util/account">Create an account</a>.</p>
+  {{/each}}
+  </ul>
+

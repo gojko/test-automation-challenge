@@ -1,0 +1,22 @@
+<h1>Account</h1>
+
+<p>Name: <span id="name">{{name}}</span></p>
+<p>Balance: <span id="balance">{{balance}}</span></p>
+
+{{#if error}}
+Error: {{error}}
+{{/if}}
+
+{{#if paymentResult}}
+<h2>Payment result</h2>
+{{paymentResult.message}} [id: {{paymentResult.id}}]
+{{/if}}
+
+{{#unless isAdmin}}
+<h2>Top up your balance</h2>
+<form method="post" action="/user/topup">
+<input name="card" placeholder="card"/><br/>
+<input name="amount" placeholder="amount" /><br/>
+<input type="submit"/>
+</form>
+{{/unless}}
