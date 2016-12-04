@@ -1,4 +1,4 @@
-/*global beforeEach, describe, it, console, afterEach */
+/*global beforeEach, describe, it, console, afterEach, expect, require */
 
 var Browser = require('zombie');
 
@@ -20,9 +20,8 @@ describe('Server smoke test', function () {
 		browser.destroy();
 	});
 	it('logs the admin in', function () {
-		browser.assert.success();
 		console.log('logged in as', browser.text('#login-result-name'));
-		browser.assert.text('#login-result-name', 'admin');
+		expect(browser.text('#login-result-name')).toEqual('admin');
 	});
 	describe('Account creation', function () {
 		beforeEach(function (done) {
@@ -36,16 +35,14 @@ describe('Server smoke test', function () {
 				.then(done, done.fail);
 			});
 			it('should set balance', function () {
-				browser.assert.success();
-				browser.assert.url('/util/account');
-				browser.assert.text('#balance', '1000');
-				browser.assert.text('#name', 'gojko');
+				expect(browser.url).toEqual('http://example.com/util/account');
+				expect(browser.text('#balance')).toEqual('1000');
+				expect(browser.text('#name')).toEqual('gojko');
 			});
 			it('should be able to query balance after setting', function (done) {
 				browser.visit('/util/account/gojko').then(function () {
-					browser.assert.success();
-					browser.assert.text('#balance', '1000');
-					browser.assert.text('#name', 'gojko');
+					expect(browser.text('#balance')).toEqual('1000');
+					expect(browser.text('#name')).toEqual('gojko');
 				}).then(done, done.fail);
 			});
 		});

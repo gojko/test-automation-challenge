@@ -1,4 +1,4 @@
-/*global describe, expect, beforeEach, afterEach */
+/*global describe, beforeEach, afterEach, require, it, expect */
 var Browser = require('zombie');
 
 describe('Shopping Cart', function () {
@@ -19,7 +19,7 @@ describe('Shopping Cart', function () {
 		}).then(function () {
 			return browser.fill('name', 'timmy')
 				.fill('amount', 10)
-				.pressButton('#set-up-account')
+				.pressButton('#set-up-account');
 		}).then(function () {
 			return browser.visit('/util/item');
 		}).then(function () {
@@ -47,8 +47,8 @@ describe('Shopping Cart', function () {
 		browser.visit('/item/' + cheapBookItemId).then(function () {
 			return browser.pressButton('#add-to-cart');
 		}).then(function () {
-			browser.assert.text('h1', 'Log in');
-			browser.assert.text('.error', 'Cannot use admin account for this action - log in as a normal user.');
+			expect(browser.text('h1')).toEqual('Log in');
+			expect(browser.text('#error')).toEqual('Cannot use admin account for this action - log in as a normal user.');
 		}).then(done, done.fail);
 	});
 	it('allows users to check out if they have enough money', function (done) {
@@ -61,19 +61,19 @@ describe('Shopping Cart', function () {
 		}).then(function () {
 			return browser.pressButton('#add-to-cart');
 		}).then(function () {
-			browser.assert.text('h1', 'Shopping cart');
-			browser.assert.text('#totalPrice', 8);
+			expect(browser.text('h1')).toEqual('Shopping cart');
+			expect(browser.text('#totalPrice')).toEqual('8');
 		}).then(function () {
 			return browser.pressButton('#check-out');
 		}).then(function () {
-			browser.assert.text('h1', 'Checkout request');
-			browser.assert.text('#totalPrice', 8);
-			browser.assert.text('#numItems', 1);
-			browser.assert.text('#message', 'Your items are on the way');
+			expect(browser.text('h1')).toEqual('Checkout request');
+			expect(browser.text('#totalPrice')).toEqual('8');
+			expect(browser.text('#numItems')).toEqual('1');
+			expect(browser.text('#message')).toEqual('Your items are on the way');
 		}).then(function () {
 			return browser.visit('/user/me');
 		}).then(function () {
-			browser.assert.text('#balance', 2);
+			expect(browser.text('#balance')).toEqual('2');
 		}).then(done, done.fail);
 	});
 	it('prevents users from checking out if they do not have enough money', function (done) {
@@ -86,17 +86,17 @@ describe('Shopping Cart', function () {
 		}).then(function () {
 			return browser.pressButton('#add-to-cart');
 		}).then(function () {
-			browser.assert.text('h1', 'Shopping cart');
-			browser.assert.text('#totalPrice', 25);
+			expect(browser.text('h1')).toEqual('Shopping cart');
+			expect(browser.text('#totalPrice')).toEqual('25');
 		}).then(function () {
 			return browser.pressButton('#check-out');
 		}).then(function () {
-			browser.assert.text('h1', 'Checkout request');
-			browser.assert.text('#message', 'not enough money in account');
+			expect(browser.text('h1')).toEqual('Checkout request');
+			expect(browser.text('#message')).toEqual('not enough money in account');
 		}).then(function () {
 			return browser.visit('/user/me');
 		}).then(function () {
-			browser.assert.text('#balance', 10);
+			expect(browser.text('#balance')).toEqual('10');
 		}).then(done, done.fail);
 	});
 });
