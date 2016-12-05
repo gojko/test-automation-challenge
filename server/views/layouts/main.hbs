@@ -17,7 +17,7 @@
 
 
 {{#if currentAccount}}
-| <span id="user-id">logged in as <a href="/user/me">{{currentAccount}}</a></span><form method="post" action="/log-out"><input type="submit" value="Log out"/></form>
+| <span id="user-id">logged in as <a href="/user/me">{{currentAccount}}</a></span><form method="post" action="/log-out"><input type="submit" id="log-out" value="Log out"/></form>
 {{else}}
 | <a href="/log-in">Log in</a>
 {{/if}}

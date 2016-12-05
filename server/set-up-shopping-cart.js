@@ -46,8 +46,9 @@ module.exports = function setUpShoppingCart(app, cartRepository, accountReposito
 		items = cartRepository(req).map(itemById),
 		totalPrice = items.reduce(function (subtotal, item) {
 			return subtotal + (parseFloat(item.price) || 0);
-		}, 0);
-		res.render('shopping-cart', {items: items, totalPrice: totalPrice});
+		}, 0),
+		numItems = (items && items.length) || 0;
+		res.render('shopping-cart', {items: items, totalPrice: totalPrice, numItems: numItems});
 	});
 
 };
