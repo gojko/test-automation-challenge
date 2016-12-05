@@ -69,7 +69,11 @@ var Browser = require('zombie'),
 				accountSetupForm = new AccountSetupForm(browser),
 				ensureAdminLoggedIn = function () {
 					return loginForm.submit('admin', 'admin');
-				};
+				},
+				itemIds = {};
+		self.getItemId = function (itemName) {
+			return itemIds[itemName];
+		};
 		self.addUserAccount = function (username, balance) {
 			return ensureAdminLoggedIn().then(function () {
 				return accountSetupForm.submit(username, balance);
@@ -78,13 +82,15 @@ var Browser = require('zombie'),
 		self.addItem = function (name, price, description) {
 			return ensureAdminLoggedIn().then(function () {
 				return itemSetupForm.submit(name, price, description);
+			}).then(function (id) {
+				itemIds[name] = id;
+				return id;
 			});
 		};
 	};
 describe('Purchasing', function () {
 	'use strict';
 	var browser,
-		createdItemId,
 		shoppingCartWorkflow,
 		adminWorkflow;
 	beforeEach(function (done) {
@@ -95,8 +101,6 @@ describe('Purchasing', function () {
 
 		adminWorkflow.addUserAccount('test-user', 1000).then(function () {
 			return adminWorkflow.addItem('blue book', 505, 'some desc');
-		}).then(function (itemId) {
-			createdItemId = itemId;
 		}).then(done, done.fail);
 	});
 	afterEach(function () {
@@ -108,7 +112,7 @@ describe('Purchasing', function () {
 	describe('adding to cart', function () {
 		it('cannot add items when signed in as admin', function (done) {
 			shoppingCartWorkflow.signIn('admin', 'admin').then(function () {
-				return shoppingCartWorkflow.add(createdItemId);
+				return shoppingCartWorkflow.add(adminWorkflow.getItemId('blue book'));
 			}).then(function (result) {
 				expect(result.error).toEqual('Cannot use admin account for this action - log in as a normal user.');
 				expect(result.totalPrice).toEqual(0);
@@ -121,7 +125,7 @@ describe('Purchasing', function () {
 					.then(done, done.fail);
 			});
 			it('can add one item to cart when signed in as an user', function (done) {
-				shoppingCartWorkflow.add(createdItemId)
+				shoppingCartWorkflow.add(adminWorkflow.getItemId('blue book'))
 				.then(function (result) {
 					expect(result.error).toBeFalsy();
 					expect(result.totalPrice).toEqual(505);
@@ -129,9 +133,9 @@ describe('Purchasing', function () {
 				}).then(done, done.fail);
 			});
 			it('can add two items to cart when signed in as an user', function (done) {
-				shoppingCartWorkflow.add(createdItemId)
+				shoppingCartWorkflow.add(adminWorkflow.getItemId('blue book'))
 				.then(function () {
-					return shoppingCartWorkflow.add(createdItemId);
+					return shoppingCartWorkflow.add(adminWorkflow.getItemId('blue book'));
 				}).then(function (result) {
 					expect(result.error).toBeFalsy();
 					expect(result.totalPrice).toEqual(1010);
@@ -152,7 +156,7 @@ describe('Purchasing', function () {
 						return shoppingCartWorkflow.signIn(username, username);
 					}
 				}).then(function () {
-					return shoppingCartWorkflow.add(createdItemId);
+					return shoppingCartWorkflow.add(adminWorkflow.getItemId('blue book'));
 				});
 			};
 		/* specify what */
@@ -187,7 +191,7 @@ describe('Purchasing', function () {
 						return shoppingCartWorkflow.signIn(username, username);
 					}
 				}).then(function () {
-					return shoppingCartWorkflow.add(createdItemId);
+					return shoppingCartWorkflow.add(adminWorkflow.getItemId('blue book'));
 				});
 			};
 		/* specify what */

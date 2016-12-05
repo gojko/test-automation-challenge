@@ -1,14 +1,40 @@
 /*global module */
 module.exports = function setUpShoppingCart(app, cartRepository, accountRepository, itemRepository) {
 	'use strict';
-	var currentAccount = function (req) {
-		return req.session.loggedInAccount;
-	};
+	var MAX_CART_COST = 3000,
+		currentAccount = function (req) {
+			return req.session.loggedInAccount;
+		},
+		sumOfPrices = function (items) {
+			return items.reduce(function (subtotal, item) {
+				return subtotal + (parseFloat(item.price) || 0);
+			}, 0);
+		},
+		cartItems = function (req) {
+			var itemById = function (id) {
+					return itemRepository(req)[id];
+				},
+				items = cartRepository(req).map(itemById);
+			items.totalPrice = sumOfPrices(items);
+			return items;
+		},
+		showShoppingCart = function (req, res, errorMessage) {
+			var items = cartItems(req);
+			res.render('shopping-cart', {items: items, totalPrice: items.totalPrice, numItems: items.length, error: errorMessage});
+		};
+
+	app.get('/shopping-cart', showShoppingCart);
+
 	app.post('/shopping-cart', function (req, res) {
 		var itemId = req.body.itemId,
-		cart = cartRepository(req);
-		cart.push(itemId);
-		res.redirect('/shopping-cart');
+			cart = cartRepository(req),
+			newItemPrice = parseFloat(itemRepository(req)[itemId].price);
+		if (cartItems(req).totalPrice + newItemPrice <= MAX_CART_COST) {
+			cart.push(itemId);
+			showShoppingCart(req, res);
+		} else {
+			showShoppingCart(req, res, 'You can only order up to ' + MAX_CART_COST);
+		}
 	});
 	app.post('/shopping-cart/clear', function (req, res) {
 		var cart = cartRepository(req);
@@ -21,9 +47,7 @@ module.exports = function setUpShoppingCart(app, cartRepository, accountReposito
 			return itemRepository(req)[id];
 		},
 		items = cartRepository(req).map(itemById),
-		totalPrice = items.reduce(function (subtotal, item) {
-			return subtotal + (parseFloat(item.price) || 0);
-		}, 0),
+		totalPrice = sumOfPrices(items),
 		accounts = accountRepository(req),
 		accountName = currentAccount(req);
 		if (!cart.length) {
@@ -39,16 +63,5 @@ module.exports = function setUpShoppingCart(app, cartRepository, accountReposito
 		}
 	});
 
-	app.get('/shopping-cart', function (req, res) {
-		var itemById = function (id) {
-			return itemRepository(req)[id];
-		},
-		items = cartRepository(req).map(itemById),
-		totalPrice = items.reduce(function (subtotal, item) {
-			return subtotal + (parseFloat(item.price) || 0);
-		}, 0),
-		numItems = (items && items.length) || 0;
-		res.render('shopping-cart', {items: items, totalPrice: totalPrice, numItems: numItems});
-	});
 
 };
