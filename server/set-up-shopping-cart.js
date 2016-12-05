@@ -23,7 +23,10 @@ module.exports = function setUpShoppingCart(app, cartRepository, accountReposito
 			res.render('shopping-cart', {items: items, totalPrice: items.totalPrice, numItems: items.length, error: errorMessage});
 		};
 
-	app.get('/shopping-cart', showShoppingCart);
+	app.get('/shopping-cart', function (req, res) {
+		showShoppingCart(req, res, '');
+	});
+
 
 	app.post('/shopping-cart', function (req, res) {
 		var itemId = req.body.itemId,
