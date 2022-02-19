@@ -60,7 +60,6 @@ var express = require('express'),
 		app.use(express.static(__dirname + '/public'));
 		app.all('/util/*', requireAdmin);
 		app.all('/shopping-cart/*', requireNormalUser);
-		app.all('/shopping-cart', requireNormalUser);
 		app.all('/user/*', requireNormalUser);
 		app.use(bodyParser.urlencoded({ extended: false }));
 
